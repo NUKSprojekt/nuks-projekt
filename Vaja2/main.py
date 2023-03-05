@@ -14,7 +14,7 @@ app = FastAPI()
 @app.get("/")
 def read_root():
     """
-    Default API calli
+    Default API call
     """
     return {"TODO app"}
 
