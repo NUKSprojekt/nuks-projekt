@@ -2,7 +2,7 @@ from typing import Union
 from fastapi import FastAPI
 from database import Base, engine, ToDO
 import schemas
-from sqlalchemy.orm import Session # orm povezuje objekte (maps) v kodi z database tabele (relations)
+from sqlalchemy.orm import Session # orm povezuje objekte (maps) v kodi z database tabelami (relations)
 
 
 Base.metadata.create_all(engine)
@@ -16,7 +16,7 @@ def read_root():
     """
     Default API call
     """
-    return {"TODO app"}
+    return "TODO app"
 
 
 @app.post("/add")
@@ -30,20 +30,18 @@ def create_todo(todo: schemas.ToDoTask):
     session.close()
     return f"Created new todo with id: {id}"
 
-    return "Create TODO"
-
 @app.get("/get/{id}")
 def read_todo(id: int):
-    return "Read todo item with id {id}"
+    return {"Read todo item with id": id}
 
-@app.put("/change/{id}")
-def change_todo(id: int):
-    return "Read todo item with id {id}"
+@app.put("/update/{id}")
+def update_todo(id: int):
+    return {"Update todo item with id": id}
 
 @app.delete("/delete/{id}")
-def change_todo(id: int):
-    return "Delete todo item with id {id}"
+def delete_todo(id: int):
+    return {"Delete todo item with id": id}
 
-@app.get("list")
+@app.get("/list")
 def read_todo_list():
     return "All todos"

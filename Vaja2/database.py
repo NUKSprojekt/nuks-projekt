@@ -12,6 +12,6 @@ Base = declarative_base() # vrne class; baza za ta class, ki predstavlja tabelo 
 
 
 class ToDO(Base):
-    __tablename__ = "todos" 
+    __tablename__ = "todotable" 
     id = Column(Integer, primary_key=True) # id todos ukazov, tipa int, predstavlja primary key
     task = Column(String(50)) # taski so tipa string
