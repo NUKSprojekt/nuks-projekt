@@ -2,6 +2,7 @@ API:
 - get API za izpis vseh restavracij in njihovih ocen
 - get API za izpis posameznih restavracij in pripadajočih ocen uporabnikov
 - get API za izpis restavracij glede na vrsto hrane
+- post API za oddajo ocene uporabnika
 
 Database:
 - tabela kamor se zapisujejo vse ocene
