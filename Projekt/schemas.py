@@ -8,3 +8,6 @@ class rating(BaseModel):
     service: int
     price: int
     comment: str
+
+    class Config:
+        orm_mode = True
