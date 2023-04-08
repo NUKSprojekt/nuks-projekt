@@ -1,9 +1,9 @@
 <template>
 <div class="rating">
     <h3>
-        {{ rating.restaurant_id }}
+      {{ rating.user_id }}
+      <p>Average: {{ rating.average }}</p>
     </h3>
-    <p>User: {{rating.user_id}}</p>
     <p>Food: {{rating.food}}</p>
     <p>Ambient: {{rating.ambient}}</p>
     <p>Staff: {{rating.staff}}</p>

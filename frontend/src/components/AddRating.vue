@@ -6,42 +6,29 @@
         <option v-for="(option, index) in options" :key="index" :value="option.id">{{ option.restaurant_name }}</option>
       </select>
     </div>
-    <!--<div class="form-control">
-      <label>User</label>
-      <input type="checkbox" id="Zelo slabo" value="1" v-model="checkedNames">
-      <label for="Zelo slabo">Zelo slabo</label>
-      <input type="checkbox" id="Slabo" value="2" v-model="checkedNames">
-      <label for="Slabo">Slabo</label>
-      <input type="checkbox" id="Dobro" value="3" v-model="checkedNames">
-      <label for="Dobro">Dobro</label>
-      <input type="checkbox" id="Zelo dobro" value="4" v-model="checkedNames">
-      <label for="Zelo dobro">Zelo dobro</label>
-      <input type="checkbox" id="Odlično" value="5" v-model="checkedNames">
-      <label for="Odlično">Odlično</label>
-    </div>-->
     <div class="form-control">
       <label>User</label>
       <input type="text" v-model="user" name="user" placeholder="Pick a Username" />
     </div> 
     <div class="form-control">
       <label>Food Rating</label>
-      <input type="text" v-model="food" name="food" placeholder="Add Food Rating"/>
+      <input type="text" v-model="food" name="food" placeholder="1 (Very Bad) - 5 (Excellent)"/>
     </div>
     <div class="form-control">
       <label>Ambient Rating</label>
-      <input type="text" v-model="ambient" name="ambient" placeholder="Add Ambient Rating"/>
+      <input type="text" v-model="ambient" name="ambient" placeholder="1 (Very Bad) - 5 (Excellent)"/>
     </div>
     <div class="form-control">
       <label>Staff Rating</label>
-      <input type="text" v-model="staff" name="staff" placeholder="Add Staff Rating"/>
+      <input type="text" v-model="staff" name="staff" placeholder="1 (Very Bad) - 5 (Excellent)"/>
     </div>
     <div class="form-control">
       <label>Service Rating</label>
-      <input type="text" v-model="service" name="service" placeholder="Add Service Rating"/>
+      <input type="text" v-model="service" name="service" placeholder="1 (Very Bad) - 5 (Excellent)"/>
     </div>
     <div class="form-control">
       <label>Price Rating</label>
-      <input type="text" v-model="price" name="price" placeholder="Add Price Rating"/>
+      <input type="text" v-model="price" name="price" placeholder="1 (Not Worth It) - 5 (Worth My Money)"/>
     </div>
     <div class="form-control">
       <label>Comment</label>

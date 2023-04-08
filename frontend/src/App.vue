@@ -1,18 +1,24 @@
-/* eslint-disable */
 <template>
   <div class="container">
-    <Header @toggle-add-rating="toggleAddRating" title="Restaurants" :showAddRating="showAddRating"/>
+    <Header @toggle-add-rating="toggleAddRating" title="Rating Restaurants" :showAddRating="showAddRating"/>
     <div v-show="showAddRating">
       <AddRating @add-rating="addRating"/>
     </div>
-    <!--<Ratings :ratings="ratings" /> -->
-    <AvgRatings :avgRatings="avgRatings" />
+    <div>
+      <label for="options">Restaurant Filter: </label>
+      <select name="options" id="options" v-model="selectedRestaurant">
+        <option v-for="(option, index) in options" :key="index" :value="option.id">{{ option.restaurant_name }}</option>
+      </select>
+    </div>
+    <Ratings :ratings="ratings" />
+    <h1 style="line-height:3.5em;">{{ "All Restaurants" }}</h1>
+    <AvgRatings :avgRatings="avgRatings" /> 
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
-//import Ratings from './components/Ratings.vue'
+import Ratings from './components/Ratings.vue'
 import AddRating from './components/AddRating.vue'
 import AvgRatings from './components/AvgRatings.vue'
 import axios from 'axios'
@@ -21,7 +27,7 @@ export default {
   name: 'App',
   components: {
     Header,
-    //Ratings,
+    Ratings,
     AddRating,
     AvgRatings
   },
@@ -31,6 +37,8 @@ export default {
       ratings: [],
       showAddRating: false,
       avgRatings: [],
+      options: [],
+      selectedRestaurant: null
     }
   },
   methods: {
@@ -38,36 +46,25 @@ export default {
       this.showAddRating = !this.showAddRating
     },
 
-    /*
     getRestaurants() {
       axios.get('http://localhost:8000/restaurants')
-      .then((res) => {
-        this.msg = res.data;
-        console.log(res);
+      .then(response => {
+        this.options = response.data;
+        console.log(response.data);
       })
-      .catch((error) => {
-        console.error(error)
+      .catch(error => {
+        console.log(error);
       });
     },
-  
 
-    getRating() {
-      axios.get('http://localhost:8000/rating/{rating_id}?id=2')
-      .then((rating) => {
-        this.rating = rating.data
-        console.log(rating)
-        console.log(this.msg)
-      })
-    },
-    */
-    getRatings() {
-      axios.get('http://localhost:8000/ratings')
-      .then((ratings) => {
+    getRestaurantRatings(id) {
+      axios.get(`http://localhost:8000/ratings/restaurant/{restaurant_id}?id=${id}`)
+      .then(ratings => {
         this.ratings = ratings.data;
-        console.log(ratings);
+        console.log(ratings.data);
       })
-      .catch((error) => {
-        console.error(error)
+      .catch(error => {
+        console.log(error); 
       });
     },
 
@@ -100,23 +97,23 @@ export default {
   },
 
   mounted() {
-    //his.getRatings();
+    this.getRestaurants();
     this.getAvgRatings();
+  },
+
+  watch: {
+    selectedRestaurant: function() {
+      if(this.selectedRestaurant) {
+        console.log('Selected restaurant ID: ', this.selectedRestaurant);
+        this.getRestaurantRatings(this.selectedRestaurant);
+      }
+    }
   }
+    
 }
 </script>
 
 <style>
-/*
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-*/
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
 * {
   box-sizing: border-box;

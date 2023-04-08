@@ -6,7 +6,7 @@
     ],
     "rules": {
       "vue/multi-word-component-names": ["error", {
-        "ignores": ["Header", "Button", "Rating", "Ratings"]
+        "ignores": ["Header", "Button", "Rating", "Ratings", "Star"]
       }]
     }
   }

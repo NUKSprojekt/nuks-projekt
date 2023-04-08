@@ -2,13 +2,14 @@
 <div class="avgRating">
     <h3>
         {{ avgRating.restaurant_name }}
+        <p>Average: {{ avgRating.average }}</p>
     </h3>
     <p>Food: {{ avgRating.food }}</p>
     <p>Ambient: {{ avgRating.ambient }}</p>
     <p>Staff: {{ avgRating.staff }}</p>
     <p>Service: {{ avgRating.service }}</p>
     <p>Price: {{ avgRating.price }}</p>
-    <p>Average: {{ avgRating.average }}</p>
+    
 </div>
 </template>
 
@@ -18,7 +19,7 @@ export default {
     name: 'AvgRating',
     props: {
         avgRating: Object,
-    }
+    },
 }
 </script>
 

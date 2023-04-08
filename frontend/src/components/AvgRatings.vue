@@ -9,13 +9,14 @@
 
 <script>
 import avgRating from './AvgRating.vue'
+
 export default {
     name: 'AvgRatings',
     props: {
         avgRatings: Array,
     },
     components: {
-        avgRating,
+        avgRating
     }
 }
 </script>

@@ -48,6 +48,33 @@ def read_rating(id: int):
         raise HTTPException(status_code=404, detail=f"Rating with id {id} does not exist.")
     return rating
 
+@app.get("/ratings/restaurant/{restaurant_id}")
+@version(1)
+def read_rating(id: int):
+    session = Session(bind = engine, expire_on_commit=False)
+    ratings = session.query(Rating).filter_by(restaurant_id=id).all()
+    session.close()
+
+    all_ratings = []
+    for rating in ratings:
+        avg = (rating.food + rating.ambient + rating.staff + rating.service + rating.price) / 5
+        avgratings = {
+            'id': rating.id,
+            'restaurant_id': rating.restaurant_id,
+            'user_id': rating.user_id,
+            'food': rating.food,
+            'ambient': rating.ambient,
+            'staff': rating.staff,
+            'service': rating.service,
+            'price': rating.price,
+            'comment': rating.comment,
+            'average': avg
+        }
+        all_ratings.append(avgratings)
+    if not all_ratings:
+        raise HTTPException(status_code=404, detail=f"Rating with id {id} does not exist.")
+    return all_ratings
+
 @app.post("/rating", status_code=status.HTTP_201_CREATED)
 @version(1)
 def add_rating(rating: schemas.rating):
@@ -78,21 +105,17 @@ def delete_rating(id: int):
 @version(1)
 def get_all_restaurants_rating_averages():
     try:
-        # Fetch all restaurants from the Restaurant table
         session = Session(bind = engine, expire_on_commit=False)
         restaurants = session.query(Restaurant).all()
         session.close()
 
-        # Create a dictionary to store the calculated averages for each restaurant
         all_averages = []
         
         for restaurant in restaurants:
-            # Fetch all ratings associated with the restaurant from the Rating table
             session = Session(bind = engine, expire_on_commit=False)
             ratings = session.query(Rating).filter_by(restaurant_id=restaurant.id).all()
             session.close()
 
-            # Calculate average values for each parameter
             total_ratings = len(ratings)
             if total_ratings == 0:
                 avg_food = 0
@@ -109,7 +132,6 @@ def get_all_restaurants_rating_averages():
                 avg_price = sum([rating.price for rating in ratings]) / total_ratings
                 avg = (avg_food + avg_ambient + avg_staff + avg_service + avg_price) / 5
 
-            # Create a dictionary to store the calculated values for the current restaurant
             averages = {
                 'restaurant_id': restaurant.id,
                 'restaurant_name': restaurant.restaurant_name,
@@ -121,13 +143,10 @@ def get_all_restaurants_rating_averages():
                 'average': avg
             }
             
-            # Add the dictionary to the list of all averages
             all_averages.append(averages)
-        
-        # Return the calculated averages for all restaurants as JSON
+   
         return all_averages
-        #JSONResponse(content=all_averages, status_code=200)
-    
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
