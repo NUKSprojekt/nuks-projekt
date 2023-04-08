@@ -5,28 +5,32 @@
     <div v-show="showAddRating">
       <AddRating @add-rating="addRating"/>
     </div>
-    <Ratings :ratings="ratings" />
+    <!--<Ratings :ratings="ratings" /> -->
+    <AvgRatings :avgRatings="avgRatings" />
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
-import Ratings from './components/Ratings.vue'
+//import Ratings from './components/Ratings.vue'
 import AddRating from './components/AddRating.vue'
+import AvgRatings from './components/AvgRatings.vue'
 import axios from 'axios'
 
 export default {
   name: 'App',
   components: {
     Header,
-    Ratings,
-    AddRating
+    //Ratings,
+    AddRating,
+    AvgRatings
   },
   data() {
     return {
       msg: '',
       ratings: [],
-      showAddRating: false
+      showAddRating: false,
+      avgRatings: [],
     }
   },
   methods: {
@@ -66,30 +70,18 @@ export default {
         console.error(error)
       });
     },
-/*
-    getAverageRatings() {
-        const response = axios.get('http://localhost:8000/restaurants');
-        console.log(response);
 
-        response.data.map((restaurant) => {
-          const foodRating = restaurant.ratings.reduce((sum, rating) => sum + rating.food, 0) / restaurant.ratings.length;
-          const ambientRating = restaurant.ratings.reduce((sum, rating) => sum + rating.ambient, 0) / restaurant.ratings.length;
-          const staffRating = restaurant.ratings.reduce((sum, rating) => sum + rating.staff, 0) / restaurant.ratings.length;
-          const serviceRating = restaurant.ratings.reduce((sum, rating) => sum + rating.service, 0) / restaurant.ratings.length;
-          const priceRating = restaurant.ratings.reduce((sum, rating) => sum + rating.price, 0) / restaurant.ratings.length;
-          const averageRating = (foodRating + ambientRating + staffRating + serviceRating + priceRating) / 5;
-          this.rating = [{
-            restaurant_id: restaurant.restaurant_name,
-            food: foodRating,
-            ambient: ambientRating,
-            staff: staffRating,
-            service: serviceRating,
-            price_: priceRating,
-            average: averageRating,
-          }];
+    getAvgRatings() {
+      axios.get('http://localhost:8000/restaurants/averages')
+      .then((avgratings) => {
+        this.avgRatings = avgratings.data;
+        console.log(avgratings);
       })
-        
-    }*/
+      .catch((error) => {
+        console.error(error)
+      });
+    },
+
     addRating(rating){
       console.log(rating);
       axios.post('http://localhost:8000/rating', rating, {
@@ -101,14 +93,15 @@ export default {
         const addedRating = response.data;
         console.log(addedRating)
         this.ratings = [...this.ratings, rating]
+        this.getAvgRatings()
       })
       .catch((error) => console.error(error));
     }
   },
 
   mounted() {
-    //this.getAverageRatings();
-    this.getRatings();
+    //his.getRatings();
+    this.getAvgRatings();
   }
 }
 </script>

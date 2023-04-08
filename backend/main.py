@@ -74,6 +74,63 @@ def delete_rating(id: int):
         raise HTTPException(status_code=404, detail=f"Rating with id {id} does not exist.")
     return {"Delete rating with id": id}
 
+@app.get("/restaurants/averages")
+@version(1)
+def get_all_restaurants_rating_averages():
+    try:
+        # Fetch all restaurants from the Restaurant table
+        session = Session(bind = engine, expire_on_commit=False)
+        restaurants = session.query(Restaurant).all()
+        session.close()
+
+        # Create a dictionary to store the calculated averages for each restaurant
+        all_averages = []
+        
+        for restaurant in restaurants:
+            # Fetch all ratings associated with the restaurant from the Rating table
+            session = Session(bind = engine, expire_on_commit=False)
+            ratings = session.query(Rating).filter_by(restaurant_id=restaurant.id).all()
+            session.close()
+
+            # Calculate average values for each parameter
+            total_ratings = len(ratings)
+            if total_ratings == 0:
+                avg_food = 0
+                avg_ambient = 0
+                avg_staff = 0
+                avg_service = 0
+                avg_price = 0
+                avg = 0
+            else:
+                avg_food = sum([rating.food for rating in ratings]) / total_ratings
+                avg_ambient = sum([rating.ambient for rating in ratings]) / total_ratings
+                avg_staff = sum([rating.staff for rating in ratings]) / total_ratings
+                avg_service = sum([rating.service for rating in ratings]) / total_ratings
+                avg_price = sum([rating.price for rating in ratings]) / total_ratings
+                avg = (avg_food + avg_ambient + avg_staff + avg_service + avg_price) / 5
+
+            # Create a dictionary to store the calculated values for the current restaurant
+            averages = {
+                'restaurant_id': restaurant.id,
+                'restaurant_name': restaurant.restaurant_name,
+                'food': avg_food,
+                'ambient': avg_ambient,
+                'staff': avg_staff,
+                'service': avg_service,
+                'price': avg_price,
+                'average': avg
+            }
+            
+            # Add the dictionary to the list of all averages
+            all_averages.append(averages)
+        
+        # Return the calculated averages for all restaurants as JSON
+        return all_averages
+        #JSONResponse(content=all_averages, status_code=200)
+    
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 @app.get("/restaurants")
 @version(1)
 def read_restaurants():
