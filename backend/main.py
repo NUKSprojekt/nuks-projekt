@@ -11,18 +11,21 @@ Base.metadata.create_all(engine)
 app = FastAPI()
 app = VersionedFastAPI(app, version_format='(major)', prefix_format='/v{major}')
 
+origins = [
+    "http://localhost",
+    "http://0.0.0.0:8082",
+    "http://localhost:8082",
+    "http://212.101.137.104:8082",
+    "*"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8082"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.get("/a")
-@version(1)
-def read_root():
-    return {"Hello": "World"}
 
 @app.get("/ratings")
 @version(1)
@@ -57,7 +60,7 @@ def read_rating(id: int):
 
     all_ratings = []
     for rating in ratings:
-        avg = (rating.food + rating.ambient + rating.staff + rating.service + rating.price) / 5
+        avg = round(((rating.food + rating.ambient + rating.staff + rating.service + rating.price) / 5), 1)
         avgratings = {
             'id': rating.id,
             'restaurant_id': rating.restaurant_id,
@@ -125,12 +128,12 @@ def get_all_restaurants_rating_averages():
                 avg_price = 0
                 avg = 0
             else:
-                avg_food = sum([rating.food for rating in ratings]) / total_ratings
-                avg_ambient = sum([rating.ambient for rating in ratings]) / total_ratings
-                avg_staff = sum([rating.staff for rating in ratings]) / total_ratings
-                avg_service = sum([rating.service for rating in ratings]) / total_ratings
-                avg_price = sum([rating.price for rating in ratings]) / total_ratings
-                avg = (avg_food + avg_ambient + avg_staff + avg_service + avg_price) / 5
+                avg_food = round((sum([rating.food for rating in ratings]) / total_ratings), 1)
+                avg_ambient = round((sum([rating.ambient for rating in ratings]) / total_ratings), 1)
+                avg_staff = round((sum([rating.staff for rating in ratings]) / total_ratings), 1)
+                avg_service = round((sum([rating.service for rating in ratings]) / total_ratings), 1)
+                avg_price = round((sum([rating.price for rating in ratings]) / total_ratings), 1)
+                avg = round(((avg_food + avg_ambient + avg_staff + avg_service + avg_price) / 5), 1)
 
             averages = {
                 'restaurant_id': restaurant.id,

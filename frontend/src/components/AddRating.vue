@@ -1,7 +1,7 @@
 <template>
   <form @submit="onSubmit" class="add-form">
     <div>
-      <label for="options">Choose a restaurant: </label>
+      <label for="options">Choose a Restaurant: </label>
       <select name="options" id="options" v-model="selectedRestaurant">
         <option v-for="(option, index) in options" :key="index" :value="option.id">{{ option.restaurant_name }}</option>
       </select>
@@ -67,6 +67,21 @@ export default {
                 alert('Please pick a username')
                 return
             }
+            if(!this.food || !this.ambient || 
+                !this.staff || !this.service ||
+                !this.price) {
+                alert('Please add a rating')
+                return
+            }
+            if(this.food < 1 || this.food > 5 || 
+                this.ambient < 1 || this.ambient > 5 ||
+                this.staff < 1 || this.staff > 5 ||
+                this.service < 1 || this.service > 5 ||
+                this.price < 1 || this.price > 5) {
+                alert('Please rate between 1 and 5')
+                return
+            }
+
             const newRating = {
                 restaurant_id: this.selectedRestaurant,
                 user: this.user,
@@ -90,10 +105,9 @@ export default {
     },
 
     created() {
-      axios.get('http://localhost:8000/restaurants')
+      axios.get('http://212.101.137.104:8000/restaurants')
       .then(response => {
         this.options = response.data;
-        console.log(response.data);
       })
       .catch(error => {
         console.log(error);

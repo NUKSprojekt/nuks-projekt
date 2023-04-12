@@ -4,12 +4,12 @@
       {{ rating.user_id }}
       <p>Average: {{ rating.average }}</p>
     </h3>
-    <p>Food: {{rating.food}}</p>
-    <p>Ambient: {{rating.ambient}}</p>
-    <p>Staff: {{rating.staff}}</p>
-    <p>Service: {{rating.service}}</p>
-    <p>Price: {{rating.price}}</p>
-    <p>Comment: {{rating.comment}}</p>
+    <p>Food: {{ rating.food }}</p>
+    <p>Ambient: {{ rating.ambient }}</p>
+    <p>Staff: {{ rating.staff }}</p>
+    <p>Service: {{ rating.service }}</p>
+    <p>Price: {{ rating.price }}</p>
+    <p>Comment: {{ rating.comment }}</p>
 </div>
 </template>
 

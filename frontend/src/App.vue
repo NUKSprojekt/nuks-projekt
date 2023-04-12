@@ -47,10 +47,9 @@ export default {
     },
 
     getRestaurants() {
-      axios.get('http://localhost:8000/restaurants')
+      axios.get('http://212.101.137.104:8000/restaurants')
       .then(response => {
         this.options = response.data;
-        console.log(response.data);
       })
       .catch(error => {
         console.log(error);
@@ -58,10 +57,9 @@ export default {
     },
 
     getRestaurantRatings(id) {
-      axios.get(`http://localhost:8000/ratings/restaurant/{restaurant_id}?id=${id}`)
+      axios.get(`http://212.101.137.104:8000/ratings/restaurant/{restaurant_id}?id=${id}`)
       .then(ratings => {
         this.ratings = ratings.data;
-        console.log(ratings.data);
       })
       .catch(error => {
         console.log(error); 
@@ -69,10 +67,9 @@ export default {
     },
 
     getAvgRatings() {
-      axios.get('http://localhost:8000/restaurants/averages')
+      axios.get('http://212.101.137.104:8000/restaurants/averages')
       .then((avgratings) => {
         this.avgRatings = avgratings.data;
-        console.log(avgratings);
       })
       .catch((error) => {
         console.error(error)
@@ -81,7 +78,7 @@ export default {
 
     addRating(rating){
       console.log(rating);
-      axios.post('http://localhost:8000/rating', rating, {
+      axios.post('http://212.101.137.104:8000/rating', rating, {
         headers: {
         "Content-Type": "application/json",
         }
@@ -89,7 +86,7 @@ export default {
       .then((response) => {
         const addedRating = response.data;
         console.log(addedRating)
-        this.ratings = [...this.ratings, rating]
+        //this.ratings = [...this.ratings, rating]
         this.getAvgRatings()
       })
       .catch((error) => console.error(error));
@@ -104,7 +101,6 @@ export default {
   watch: {
     selectedRestaurant: function() {
       if(this.selectedRestaurant) {
-        console.log('Selected restaurant ID: ', this.selectedRestaurant);
         this.getRestaurantRatings(this.selectedRestaurant);
       }
     }

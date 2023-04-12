@@ -1,6 +1,6 @@
 <template>
     <header>
-        <h1>{{title}}</h1>
+        <h1>{{ title }}</h1>
         <Button @btn-click="$emit
         ('toggle-add-rating')" 
         :text="showAddRating ? 'Close' : 'Add Rating'" 
