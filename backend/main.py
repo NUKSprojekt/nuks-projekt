@@ -16,12 +16,14 @@ origins = [
     "http://0.0.0.0:8082",
     "http://localhost:8082",
     "http://212.101.137.104:8082",
+    "http://212.101.137.104:8080",
+    "http://127.0.0.1:8080",
     "*"
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -152,6 +154,20 @@ def get_all_restaurants_rating_averages():
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.put("/rating/update/{id}")
+@version(1)
+def update_rating(id: int, comment: str):
+    session = Session(bind = engine, expire_on_commit=False)
+    rating = session.query(Rating).get(id)
+    if rating:
+        rating.comment = comment
+        session.commit()
+    session.close()
+    if not rating:
+        raise HTTPException(status_code=404, detail=f"Rating with id {id} does not exist.")
+    return rating
+
 
 @app.get("/restaurants")
 @version(1)

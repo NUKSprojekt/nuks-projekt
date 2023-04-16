@@ -25,3 +25,10 @@ package.json
 authorized_keys
 .openfaas
 .config
+template
+build
+.secrets
+.docker
+sumfunction
+commentchecker.yml
+sumfunction.yml

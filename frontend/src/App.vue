@@ -90,12 +90,21 @@ export default {
         this.getAvgRatings()
       })
       .catch((error) => console.error(error));
+    },
+
+    checkComments(){
+      axios.get('/function/commentchecker')
+      .then((response) => {
+        console.log(response.data)
+      })
+      .catch((error) => console.error(error));
     }
   },
 
   mounted() {
     this.getRestaurants();
     this.getAvgRatings();
+    this.checkComments();
   },
 
   watch: {
