@@ -1,4 +1,6 @@
 # frontend
+## About
+- Description: Frontend page for single-page-application for rating restaurants
 
 ## Project setup
 ```
@@ -19,6 +21,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
