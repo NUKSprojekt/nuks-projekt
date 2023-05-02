@@ -11,7 +11,7 @@ COPY package-lock.json .
 
 RUN npm install
 
-COPY . .
+COPY src .
 
 RUN npm install axios
 

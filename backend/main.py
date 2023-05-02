@@ -35,13 +35,7 @@ def read_ratings():
     session = Session(bind = engine, expire_on_commit=False)
     rating_all = session.query(Rating).all()
     session.close()
-    return rating_all
-    """
-    Default page
-    (Treba dodat funkcije za izpis vseh restavracij, profilne slike, povprečne ocene in najaktualnejši komentar)
-    (Zaenkrat samo lista vseh ocen)
-  
-"""    
+    return rating_all  
 
 @app.get("/rating/{rating_id}")
 @version(1)
@@ -177,7 +171,7 @@ def read_restaurants():
     session.close()
     return restaurant_all
 
-@app.get("/restaurant/{restaurant_id}") # stran za posamezno restavracijo
+@app.get("/restaurant/{restaurant_id}")
 @version(1)
 def read_restaurant(id: int):
     session = Session(bind = engine, expire_on_commit=False)
@@ -186,11 +180,6 @@ def read_restaurant(id: int):
     if not restaurant:
         raise HTTPException(status_code=404, detail=f"Restaurant with id {id} does not exist.")
     return restaurant
-    """
-    Treba dodat, da se izpišejo vse ocene uporabnikov (kot post s slikami, ocenami, skupno povprečno oceno in komentarjem)
-    """
-
-    #return {"restaurant_id": restaurant_id}
 
 @app.post("/restaurant", status_code=status.HTTP_201_CREATED)
 @version(1)
@@ -218,59 +207,4 @@ def delete_restaurant(id: int):
         raise HTTPException(status_code=404, detail=f"Restaurant with id {id} does not exist.")
     return {"Delete restaurant with id": id}
 
-@app.get("/food_type/{food_type}") # stran za vrste prehrane (kitajska, indijska...)
-@version(1)
-def read_type(food_type: str):
-    session = Session(bind = engine, expire_on_commit=False)
-    restaurants = session.query(Restaurant).filter(Restaurant.food_type == food_type).all()
-    session.close()
-    if not restaurants:
-        raise HTTPException(status_code=404, detail=f"There is no restaurants with food type {food_type}.")
-    return f"Restaurants with food type {food_type}:", restaurants
-
-"""
-@app.get("/users")
-@version(1)
-def read_users():
-    session = Session(bind = engine, expire_on_commit=False)
-    user_all = session.query(User).all()
-    session.close()
-    return user_all
-
-@app.get("/user/{user_id}")
-@version(1)
-def read_user(id: int):
-    session = Session(bind = engine, expire_on_commit=False)
-    user = session.query(User).get(id)
-    session.close()
-    if not user:
-        raise HTTPException(status_code=404, detail=f"User with id {id} does not exist.")
-    return user
-
-@app.post("/user", status_code=status.HTTP_201_CREATED)
-@version(1)
-def add_user(user: schemas.user):
-    session = Session(bind = engine, expire_on_commit=False)
-    user = User(username = user.username)
-
-    session.add(user)
-    session.commit()
-    id = user.id
-    session.close()
-    return f"Added new user with id: {id}"
-
-@app.delete("/user_delete/{user_id}")
-@version(1)
-def delete_user(id: int):
-    session = Session(bind = engine, expire_on_commit=False)
-    user = session.query(User).get(id)
-    if user:
-        session.delete(user)
-        session.commit()
-        session.close()
-    else:
-        session.close()
-        raise HTTPException(status_code=404, detail=f"User with id {id} does not exist.")
-    return {"Delete user with id": id}
-"""
 
